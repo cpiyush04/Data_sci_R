@@ -21,12 +21,37 @@ write.csv(data_CMP,"C:\\Users\\piyus\\Desktop\\nifty50.csv")
 #------------------------------------------------------------------------------#
 # Ques -b
 html<-read_html("https://www.moneyworks4me.com/indianstocks/large-cap/automobiles/automobiles-passenger-cars/mahindra-mahindra/company-info")
+
+#uncomment one of the following and run code to see other companies data.
+
+# html<-read_html("https://www.moneyworks4me.com/indianstocks/large-cap/telecom/telecommunication-service-provider/bharti-airtel/company-info")
+# html<-read_html("https://www.moneyworks4me.com/indianstocks/large-cap/automobiles/automobiles-trucks-lcv/tata-motors/company-info")
+# html<-read_html("https://www.moneyworks4me.com/indianstocks/large-cap/it-ites/it-software/infosys/company-info")
+# html<-read_html("https://www.moneyworks4me.com/indianstocks/large-cap/fmcg/consumer-food/britannia-inds/company-info")
+
 infotab<-html %>% html_table(fill=TRUE,convert = FALSE,header = TRUE)
+
+# selecting required tables from the page
 data1<-infotab[[1]]
-data2<-infotab[[2]]
 data3<-infotab[[3]]
+
+# converting tables to match desired output
 data1<- data.frame(data1,row.names = NULL)
-data1
+names(data1) <- data1[1,]
+data1 <- data1[-c(1:5),]
+data1 <- data1[,-c(12,13,14)]
+
+data3<- data.frame(data3,row.names = NULL)
+names(data3) <- data3[1,]
+data3<- data3[-1,]
+data3 <- data3[,-c(12,13)]
+
+# using rbind to combine two dataframes
+company_data<- rbind(data1,data3)
+
+#below is the code to write dataframe to csv, giving one of the five data.
+#write.csv(company_data,"C:\\Users\\piyus\\Desktop\\Mahindra_data.csv", row.names = FALSE)
+
 
 
 #------------------------------------------------------------------------------#
